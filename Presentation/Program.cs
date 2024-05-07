@@ -1,44 +1,56 @@
+using Domain.Configurations;
+using FastEndpoints;
+using FastEndpoints.Security;
+using FastEndpoints.Swagger;
 using Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var jwtAuthorizationConfiguration = builder.Configuration.GetSection(nameof(JwtAuthorizationConfiguration)).Get<JwtAuthorizationConfiguration>()!;
+
 builder.Services.AddConfigurations(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddFastEndpoints();
+builder.Services.AddAuthenticationJwtBearer(options =>
+{
+    options.SigningKey = jwtAuthorizationConfiguration.IssuerSigningKey;
+});
+builder.Services.AddAuthorization();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpContextAccessor();
+builder.Services.SwaggerDocument(options =>
+{
+    options.ShortSchemaNames = true;
+    options.EnableJWTBearerAuth = true;
+    options.DocumentSettings = settings =>
+    {
+        settings.DocumentName = "TableTennisLeagueAPI";
+        settings.Title = "TableTennisLeagueAPI";
+    };
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policyBuilder =>
+    {
+        policyBuilder.AllowAnyOrigin();
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseFastEndpoints(config =>
     {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+        config.Endpoints.RoutePrefix = "api";
+    }
+);
+app.UseDeveloperExceptionPage();
+app.UseOpenApi();
+app.UseSwaggerUi(s => s.ConfigureDefaults());
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
