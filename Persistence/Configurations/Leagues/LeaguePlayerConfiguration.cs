@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Configurations.Leagues;
+namespace Persistence.Configurations.Leagues;
 
 public class LeaguePlayerConfiguration : IEntityTypeConfiguration<LeaguePlayer>
 {

@@ -2,12 +2,18 @@ using Domain.Configurations;
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
+using Persistence;
+using Microsoft.EntityFrameworkCore;
 using Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var jwtAuthorizationConfiguration = builder.Configuration.GetSection(nameof(JwtAuthorizationConfiguration)).Get<JwtAuthorizationConfiguration>()!;
+var jwtAuthorizationSection = builder.Configuration.GetSection(nameof(JwtAuthorizationConfiguration));
 
+var jwtAuthorizationConfiguration = jwtAuthorizationSection.Get<JwtAuthorizationConfiguration>()!;
+var connectionString = builder.Configuration.GetConnectionString("Database");
+
+builder.Services.AddDbContext<DatabaseContext>(o => o.UseSqlServer(connectionString));
 builder.Services.AddConfigurations(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFastEndpoints();
@@ -28,6 +34,8 @@ builder.Services.SwaggerDocument(options =>
         settings.Title = "TableTennisLeagueAPI";
     };
 });
+
+builder.Services.AddOptions<JwtAuthorizationConfiguration>().Bind(jwtAuthorizationSection).ValidateDataAnnotations().ValidateOnStart();
 
 builder.Services.AddCors(options =>
 {

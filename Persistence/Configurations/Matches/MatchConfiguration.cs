@@ -3,7 +3,7 @@ using Domain.Matches;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Configurations.Matches;
+namespace Persistence.Configurations.Matches;
 
 public class MatchConfiguration : IEntityTypeConfiguration<Match>
 {
@@ -14,6 +14,6 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
         builder.HasOne<LeaguePlayer>(_ => _.Home);
         builder.HasOne<LeaguePlayer>(_ => _.Away);
         builder.HasOne(_ => _.Season);
-        builder.HasMany(_ => _.Games);
+        builder.HasMany(_ => _.Sets);
     }
 }

@@ -6,11 +6,21 @@ namespace Domain.Seasons;
 
 public sealed class Season : Entity
 {
+    private Season() { }
+    
+    private Season(int numberOfRounds, int bestOf, int setThreshold, League league)
+    {
+        NumberOfRounds = numberOfRounds;
+        BestOf = bestOf;
+        SetThreshold = setThreshold;
+        League = league;
+    }
+    
     private readonly IList<Match> _matches = new List<Match>();
 
-    public int NumberOfRounds { get; set; } = 0;
-    public int BestOf { get; set; } = 7;
-    public int GameThreshold { get; set; } = 11;
+    public int NumberOfRounds { get; set; }
+    public int BestOf { get; set; }
+    public int SetThreshold { get; set; }
     
     public League? League { get; private set; }
     public IEnumerable<Match> Matches => _matches;
@@ -18,5 +28,12 @@ public sealed class Season : Entity
     public void AddMatch(Match match)
     {
         _matches.Add(match);
+    }
+
+    public static Season Create(int numberOfRounds, int bestOf, int setThreshold, League league)
+    {
+        var season = new Season(numberOfRounds, bestOf, setThreshold, league);
+
+        return season;
     }
 }

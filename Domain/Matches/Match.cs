@@ -6,6 +6,8 @@ namespace Domain.Matches;
 
 public sealed class Match : Entity
 {
+    private Match() { }
+    
     private Match(int scoreHome, int scoreAway, int roundNumber, Season season, LeaguePlayer home, LeaguePlayer away)
     {
         ScoreHome = scoreHome;
@@ -16,7 +18,7 @@ public sealed class Match : Entity
         Away = away;
     }
 
-    private readonly IList<Game> _games = new List<Game>();
+    private readonly IList<Set> _sets = new List<Set>();
 
     public int? ScoreHome { get; set; }
     public int? ScoreAway { get; set; }
@@ -28,11 +30,11 @@ public sealed class Match : Entity
     public LeaguePlayer? Home { get; set; }
     public LeaguePlayer? Away { get; set; }
     public Season? Season { get; set; }
-    public IEnumerable<Game> Games => _games;
+    public IEnumerable<Set> Sets => _sets;
 
-    public void AddGame(Game game)
+    public void AddSet(Set set)
     {
-        _games.Add(game);
+        _sets.Add(set);
     }
 
     public static Match Create(int scoreHome, int scoreAway, int roundNumber, Season season, LeaguePlayer home, LeaguePlayer away)

@@ -8,6 +8,8 @@ public sealed class User : Entity
 
     public string Nickname { get; set; } = string.Empty;
     public string EmailAddress { get; set; } = string.Empty;
+    public string PasswordHash { get; set; } = string.Empty;
+    public string PasswordSalt { get; set; } = string.Empty;
     
     public IEnumerable<UserRole> UserRoles => _userRoles;
 

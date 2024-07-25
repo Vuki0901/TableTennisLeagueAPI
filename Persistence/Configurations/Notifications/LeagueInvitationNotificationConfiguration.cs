@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Configurations.Notifications;
+namespace Persistence.Configurations.Notifications;
 
 public class LeagueInvitationNotificationConfiguration : IEntityTypeConfiguration<LeagueInvitationNotification>
 {
