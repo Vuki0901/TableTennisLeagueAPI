@@ -1,6 +1,6 @@
 ﻿using FastEndpoints;
 
-namespace Presentation.Endpoints.Common;
+namespace Presentation.Features.Common;
 
 public class PingEndpoint : EndpointWithoutRequest<bool>
 {

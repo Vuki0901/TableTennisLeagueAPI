@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Domain.Configurations;
 using FastEndpoints;
 using FastEndpoints.Security;
@@ -54,6 +55,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseFastEndpoints(config =>
     {
+        config.Serializer.Options.Converters.Add(new JsonStringEnumConverter());
         config.Endpoints.RoutePrefix = "api";
     }
 );

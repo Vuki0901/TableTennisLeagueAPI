@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations.Matches;
 
-public class GameConfiguration : IEntityTypeConfiguration<Set>
+public class GameConfiguration : IEntityTypeConfiguration<Game>
 {
-    public void Configure(EntityTypeBuilder<Set> builder)
+    public void Configure(EntityTypeBuilder<Game> builder)
     {
         builder.HasKey(_ => _.Id);
 

@@ -18,7 +18,7 @@ public sealed class Match : Entity
         Away = away;
     }
 
-    private readonly IList<Set> _sets = new List<Set>();
+    private readonly IList<Game> _sets = new List<Game>();
 
     public int? ScoreHome { get; set; }
     public int? ScoreAway { get; set; }
@@ -30,11 +30,11 @@ public sealed class Match : Entity
     public LeaguePlayer? Home { get; set; }
     public LeaguePlayer? Away { get; set; }
     public Season? Season { get; set; }
-    public IEnumerable<Set> Sets => _sets;
+    public IEnumerable<Game> Sets => _sets;
 
-    public void AddSet(Set set)
+    public void AddSet(Game game)
     {
-        _sets.Add(set);
+        _sets.Add(game);
     }
 
     public static Match Create(int scoreHome, int scoreAway, int roundNumber, Season season, LeaguePlayer home, LeaguePlayer away)

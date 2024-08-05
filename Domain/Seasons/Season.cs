@@ -8,11 +8,11 @@ public sealed class Season : Entity
 {
     private Season() { }
     
-    private Season(int numberOfRounds, int bestOf, int setThreshold, League league)
+    private Season(int numberOfRounds, int bestOf, int gameThreshold, League league)
     {
         NumberOfRounds = numberOfRounds;
         BestOf = bestOf;
-        SetThreshold = setThreshold;
+        GameThreshold = gameThreshold;
         League = league;
     }
     
@@ -20,7 +20,7 @@ public sealed class Season : Entity
 
     public int NumberOfRounds { get; set; }
     public int BestOf { get; set; }
-    public int SetThreshold { get; set; }
+    public int GameThreshold { get; set; }
     
     public League? League { get; private set; }
     public IEnumerable<Match> Matches => _matches;

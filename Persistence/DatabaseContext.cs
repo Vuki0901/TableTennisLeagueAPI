@@ -16,7 +16,7 @@ public sealed class DatabaseContext(DbContextOptions<DatabaseContext> options) :
     public DbSet<UserRole> UserRoles { get; init; } = null!;
     public DbSet<Season> Seasons { get; set; } = null!;
     public DbSet<Notification> Notifications { get; set; } = null!;
-    public DbSet<Set> Sets { get; set; } = null!;
+    public DbSet<Game> Games { get; set; } = null!;
     public DbSet<LeaguePlayer> LeaguePlayers { get; set; } = null!;
     public DbSet<Match> Matches { get; set; } = null!;
     public DbSet<LeagueInvitation> LeagueInvitations { get; set; } = null!;
@@ -34,7 +34,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<DatabaseCo
     {
         var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory())!.FullName + "/Presentation/")
+            .SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory())!.FullName + "/API/")
             .AddJsonFile("appsettings.json")
             .Build();
         var connectionString = configuration.GetConnectionString("Database");

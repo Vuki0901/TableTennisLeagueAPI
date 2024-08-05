@@ -12,7 +12,7 @@ public class SeasonConfiguration : IEntityTypeConfiguration<Season>
 
         builder.Property(_ => _.NumberOfRounds).IsRequired();
         builder.Property(_ => _.BestOf).IsRequired();
-        builder.Property(_ => _.SetThreshold).IsRequired();
+        builder.Property(_ => _.GameThreshold).IsRequired();
         
         builder.HasOne(_ => _.League);
         builder.HasMany(_ => _.Matches);
