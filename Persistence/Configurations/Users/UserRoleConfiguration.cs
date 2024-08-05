@@ -9,7 +9,10 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     public void Configure(EntityTypeBuilder<UserRole> builder)
     { 
         builder.HasKey(_ => _.Id);
-        builder.HasOne(_ => _.User);
-        builder.HasDiscriminator(_ => _.RoleType);
+        builder.HasDiscriminator(_ => _.RoleType)
+            .HasValue<Player>(nameof(Player))
+            .HasValue<Administrator>(nameof(Administrator));
+        
+        builder.HasIndex("RoleType", "UserId").IsUnique();
     }
 }

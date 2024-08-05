@@ -11,6 +11,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(_ => _.Id);
         builder.Property(_ => _.Nickname).IsRequired().HasMaxLength(50);
         builder.Property(_ => _.EmailAddress).IsRequired();
-        builder.HasMany(_ => _.UserRoles);
+        builder.HasMany(_ => _.UserRoles).WithOne();
     }
 }
