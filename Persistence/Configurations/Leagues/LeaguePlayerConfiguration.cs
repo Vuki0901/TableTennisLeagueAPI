@@ -10,7 +10,7 @@ public class LeaguePlayerConfiguration : IEntityTypeConfiguration<LeaguePlayer>
     {
         builder.HasKey(_ => _.Id);
 
-        builder.HasOne(_ => _.League);
-        builder.HasOne(_ => _.Player);
+        // builder.HasOne(_ => _.League);
+        // builder.HasOne(_ => _.Player);
     }
 }

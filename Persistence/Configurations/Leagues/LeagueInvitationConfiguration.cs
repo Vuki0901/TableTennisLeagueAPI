@@ -10,7 +10,7 @@ public class LeagueInvitationConfiguration : IEntityTypeConfiguration<LeagueInvi
     {
         builder.HasKey(_ => _.Id);
 
-        builder.Property(_ => _.InvitationToken).IsRequired();
+        builder.Property(_ => _.PlayerEmailAddress).IsRequired();
         builder.Property(_ => _.Status).IsRequired();
         
         builder.HasOne(_ => _.League);

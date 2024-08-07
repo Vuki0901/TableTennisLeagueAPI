@@ -13,7 +13,6 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
         builder.HasDiscriminator(_ => _.Type)
             .HasValue<LeagueInvitationNotification>(nameof(LeagueInvitationNotification));
         
-        builder.HasOne(_ => _.Recipient);
         builder.HasOne(_ => _.Sender);
     }
 }

@@ -13,12 +13,7 @@ namespace Presentation.Features.Users;
 
 public sealed class RegisterUser
 {
-    public sealed class RegisterUserRequest
-    {
-        public string Nickname { get; set; } = string.Empty;
-        public string EmailAddress { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
+    public sealed record RegisterUserRequest(string Nickname, string EmailAddress, string Password);
 
     public sealed record RegisterUserResponse(string Token);
 
@@ -26,7 +21,7 @@ public sealed class RegisterUser
     {
         public override void Configure()
         {
-            Post("register-user");
+            Post("register");
             AllowAnonymous();
         }
 

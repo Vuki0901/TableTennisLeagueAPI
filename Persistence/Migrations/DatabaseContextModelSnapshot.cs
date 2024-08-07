@@ -52,12 +52,12 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("InvitationToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("LeagueId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PlayerEmailAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -171,8 +171,8 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("RecipientId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("RecipientEmailAddress")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("SenderId")
                         .HasColumnType("uniqueidentifier");
@@ -183,8 +183,6 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(34)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RecipientId");
 
                     b.HasIndex("SenderId");
 
@@ -261,8 +259,8 @@ namespace Persistence.Migrations
 
                     b.Property<string>("RoleType")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -270,6 +268,10 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("RoleType", "UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("UserRoles");
 
@@ -288,6 +290,13 @@ namespace Persistence.Migrations
                     b.HasIndex("LeagueInvitationId");
 
                     b.HasDiscriminator().HasValue("LeagueInvitationNotification");
+                });
+
+            modelBuilder.Entity("Domain.Users.Administrator", b =>
+                {
+                    b.HasBaseType("Domain.Users.UserRole");
+
+                    b.HasDiscriminator().HasValue("Administrator");
                 });
 
             modelBuilder.Entity("Domain.Users.Player", b =>
@@ -353,15 +362,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Notifications.Notification", b =>
                 {
-                    b.HasOne("Domain.Users.Player", "Recipient")
-                        .WithMany()
-                        .HasForeignKey("RecipientId");
-
                     b.HasOne("Domain.Users.Player", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId");
-
-                    b.Navigation("Recipient");
 
                     b.Navigation("Sender");
                 });
@@ -377,11 +380,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Users.UserRole", b =>
                 {
-                    b.HasOne("Domain.Users.User", "User")
+                    b.HasOne("Domain.Users.User", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Notifications.LeagueInvitationNotification", b =>
