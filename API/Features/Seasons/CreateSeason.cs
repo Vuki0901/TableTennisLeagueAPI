@@ -20,7 +20,7 @@ public class CreateSeason
             Post("seasons");
             Roles(nameof(Player));
         }
-    
+
         public override async Task HandleAsync(CreateSeasonRequest request, CancellationToken cancellationToken)
         {
             var league = await databaseContext.Leagues.FirstOrDefaultAsync(_ => _.Id == request.LeagueId, cancellationToken);

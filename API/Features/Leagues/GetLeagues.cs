@@ -23,7 +23,7 @@ public class GetLeagues
         public override async Task HandleAsync(CancellationToken cancellationToken)
         {
             var player = HttpContext.GetAuthenticatedPlayer();
-            if(player is null)
+            if (player is null)
                 ThrowError(ErrorKeys.PlayerDoesNotExist);
 
             var leaguePlayerIds = player.LeaguePlayers.Select(plp => plp.Id).ToList();

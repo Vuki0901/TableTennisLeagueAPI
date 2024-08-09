@@ -12,7 +12,7 @@ namespace Presentation.Features.Leagues;
 public class AcceptLeagueInvitation
 {
     public sealed record AcceptLeagueInvitationRequest(Guid LeagueInvitationId, Guid NotificationId);
-    
+
     public sealed record AcceptLeagueInvitationResponse(Guid LeaguePlayerId);
 
     public sealed class AcceptLeagueInvitationEndpoint(DatabaseContext databaseContext) : Endpoint<AcceptLeagueInvitationRequest, AcceptLeagueInvitationResponse>
@@ -26,7 +26,7 @@ public class AcceptLeagueInvitation
         public override async Task HandleAsync(AcceptLeagueInvitationRequest request, CancellationToken cancellationToken)
         {
             var leagueInvitation = await databaseContext.LeagueInvitations.Include(_ => _.League).FirstOrDefaultAsync(_ => _.Id == request.LeagueInvitationId && _.PlayerEmailAddress == HttpContext.GetAuthenticatedUser()!.EmailAddress, cancellationToken);
-            if(leagueInvitation is null)
+            if (leagueInvitation is null)
                 ThrowError(ErrorKeys.LeagueInvitationDoesNotExist);
 
             var leaguePlayer = LeaguePlayer.Create(LeaguePlayerLevel.Member);
@@ -37,15 +37,15 @@ public class AcceptLeagueInvitation
             leagueInvitation.Status = LeagueInvitationStatus.Accepted;
 
             var notification = await databaseContext.Notifications.FirstOrDefaultAsync(_ => _.Id != request.NotificationId, cancellationToken);
-            if(notification is not null)
+            if (notification is not null)
                 databaseContext.Notifications.Remove(notification);
-            
+
             await databaseContext.SaveChangesAsync(cancellationToken);
 
             await SendAsync(new AcceptLeagueInvitationResponse(leaguePlayer.Id), 201, cancellationToken);
         }
     }
-    
+
     public sealed class AcceptLeagueInvitationRequestValidator : Validator<AcceptLeagueInvitationRequest>
     {
         public AcceptLeagueInvitationRequestValidator()

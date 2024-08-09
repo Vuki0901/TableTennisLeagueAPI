@@ -25,10 +25,10 @@ public sealed class Match : Entity
         _games.Add(game);
     }
 
-    public static Match Create(int scoreHome, int scoreAway, int roundNumber, Season season, LeaguePlayer home, LeaguePlayer away) => new Match()
+    public static Match Create(int roundNumber, Season season, LeaguePlayer home, LeaguePlayer away) => new()
     {
-        ScoreHome = scoreHome,
-        ScoreAway = scoreAway,
+        ScoreHome = 0,
+        ScoreAway = 0,
         RoundNumber = roundNumber,
         Season = season,
         Home = home,

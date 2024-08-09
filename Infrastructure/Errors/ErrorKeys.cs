@@ -6,23 +6,30 @@ public class ErrorKeys
     public const string UserNicknameMustBeUnique = nameof(UserNicknameMustBeUnique);
     public const string UserDoesNotExist = nameof(UserDoesNotExist);
     public const string UserPasswordIsNotValid = nameof(UserPasswordIsNotValid);
-    
+
     // Leagues
     public const string LeagueNameMustBeUnique = nameof(LeagueNameMustBeUnique);
     public const string PlayerMustBeAuthenticatedToCreateLeagues = nameof(PlayerMustBeAuthenticatedToCreateLeagues);
     public const string LeagueDoesNotExist = nameof(LeagueDoesNotExist);
     public const string NewLeagueNameMustBeDifferentThatTheOldName = nameof(NewLeagueNameMustBeDifferentThatTheOldName);
     public const string LeagueMatchFormatCannotBeChangedAfterAFinishedMatch = nameof(LeagueMatchFormatCannotBeChangedAfterAFinishedMatch);
-    
+
+    // League Players
+    public const string LeaguePlayerDoesNotExist = nameof(LeaguePlayerDoesNotExist);
+
     // Players
     public const string PlayerDoesNotExist = nameof(PlayerDoesNotExist);
-    
+
     // Invitations
     public const string PlayerIsAlreadyInvitedToThisLeague = nameof(PlayerIsAlreadyInvitedToThisLeague);
     public const string LeagueInvitationDoesNotExist = nameof(LeagueInvitationDoesNotExist);
-    
+
     // Seasons
     public const string SeasonDoesNotExist = nameof(SeasonDoesNotExist);
     public const string SeasonCanNotBeUpdatedIfItHasFinishedMatches = nameof(SeasonCanNotBeUpdatedIfItHasFinishedMatches);
     public const string SeasonCanNotBeDeletedIfItHasFinishedMatches = nameof(SeasonCanNotBeDeletedIfItHasFinishedMatches);
+
+    // Matches
+    public const string PlayerHasAlreadyPlayedInThatRound = nameof(PlayerHasAlreadyPlayedInThatRound);
+    public const string MatchRoundNumbersMustBeSequential = nameof(MatchRoundNumbersMustBeSequential);
 }

@@ -11,7 +11,7 @@ public class DeleteSeason
     public sealed record DeleteSeasonRequest(Guid Id);
 
     public sealed record DeleteSeasonResponse(Guid Id);
-    
+
     public sealed class DeleteSeasonEndpoint(DatabaseContext databaseContext) : Endpoint<DeleteSeasonRequest, DeleteSeasonResponse>
     {
         public override void Configure()
@@ -23,15 +23,15 @@ public class DeleteSeason
         public override async Task HandleAsync(DeleteSeasonRequest request, CancellationToken cancellationToken)
         {
             var season = await databaseContext.Seasons.Include(_ => _.League).FirstOrDefaultAsync(_ => _.Id == request.Id, cancellationToken);
-            if(season is null)
+            if (season is null)
                 ThrowError(ErrorKeys.SeasonDoesNotExist);
-            
+
             var seasonMatches = databaseContext.Matches
                 .Include(_ => _.Season)
                 .Where(_ => _.Season != null && _.Season.Id == season.Id)
                 .AsEnumerable();
-            
-            if(seasonMatches.Any(_ => _.IsFinished))
+
+            if (seasonMatches.Any(_ => _.IsFinished))
                 ThrowError(ErrorKeys.SeasonCanNotBeDeletedIfItHasFinishedMatches);
 
             databaseContext.Seasons.Remove(season);

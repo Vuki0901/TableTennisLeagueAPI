@@ -31,7 +31,7 @@ public class AuthenticateUser
 
             if (!user.IsCorrectPassword(request.Password))
                 ThrowError(ErrorKeys.UserPasswordIsNotValid);
-            
+
             if (!user.Is<Player>())
             {
                 user.AddUserRole(new Player());
@@ -54,7 +54,7 @@ public class AuthenticateUser
                     o.User.Roles.Add(user.UserRoles.Select(ur => ur.RoleType).ToArray());
                 }
             );
-            
+
             await SendAsync(new AuthenticateUserResponse(new string(token)), cancellation: cancellationToken);
         }
     }

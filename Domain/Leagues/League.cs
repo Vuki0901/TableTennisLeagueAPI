@@ -13,7 +13,7 @@ public sealed class League : Entity
     public IEnumerable<LeaguePlayer> LeaguePlayers => _leaguePlayers;
     public IEnumerable<LeagueInvitation> LeagueInvitations => _leagueInvitations;
 
-    public static League Create(string name, MatchFormat matchFormat) => new League()
+    public static League Create(string name, MatchFormat matchFormat) => new()
     {
         Name = name,
         MatchFormat = matchFormat

@@ -23,15 +23,15 @@ public class UpdateSeason
         public override async Task HandleAsync(UpdateSeasonRequest request, CancellationToken cancellationToken)
         {
             var season = await databaseContext.Seasons.FirstOrDefaultAsync(_ => _.Id == request.Id, cancellationToken);
-            if(season is null)
+            if (season is null)
                 ThrowError(ErrorKeys.SeasonDoesNotExist);
 
             var seasonMatches = databaseContext.Matches
                 .Include(_ => _.Season)
                 .Where(_ => _.Season != null && _.Season.Id == season.Id)
                 .AsEnumerable();
-            
-            if(seasonMatches.Any(_ => _.IsFinished))
+
+            if (seasonMatches.Any(_ => _.IsFinished))
                 ThrowError(ErrorKeys.SeasonCanNotBeUpdatedIfItHasFinishedMatches);
 
             season.GameThreshold = request.GameThreshold;

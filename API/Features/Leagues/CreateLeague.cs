@@ -11,7 +11,7 @@ namespace Presentation.Features.Leagues;
 public class CreateLeague
 {
     public sealed record CreateLeagueRequest(string Name, MatchFormat MatchFormat);
-    
+
     public sealed record CreateLeagueResponse(Guid Id);
 
     public sealed class CreateLeagueEndpoint(DatabaseContext databaseContext) : Endpoint<CreateLeagueRequest, CreateLeagueResponse>
@@ -28,15 +28,15 @@ public class CreateLeague
                 ThrowError(ErrorKeys.LeagueNameMustBeUnique);
 
             var player = HttpContext.GetAuthenticatedPlayer();
-            if(player is null)
+            if (player is null)
                 ThrowError(ErrorKeys.PlayerMustBeAuthenticatedToCreateLeagues);
-            
+
             var league = League.Create(request.Name, request.MatchFormat);
-            
+
             var leaguePlayer = LeaguePlayer.Create(LeaguePlayerLevel.Owner);
             league.AddPlayer(leaguePlayer);
             player.AddLeaguePlayer(leaguePlayer);
-            
+
             await databaseContext.Leagues.AddAsync(league, cancellationToken);
             await databaseContext.SaveChangesAsync(cancellationToken);
 

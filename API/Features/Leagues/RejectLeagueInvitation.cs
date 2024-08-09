@@ -12,7 +12,7 @@ namespace Presentation.Features.Leagues;
 public class RejectLeagueInvitation
 {
     public sealed record RejectLeagueInvitationRequest(Guid LeagueInvitationId, Guid NotificationId);
-    
+
     public sealed record RejectLeagueInvitationResponse(Guid LeagueInvitationId);
 
     public sealed class RejectLeagueInvitationEndpoint(DatabaseContext databaseContext) : Endpoint<RejectLeagueInvitationRequest, RejectLeagueInvitationResponse>
@@ -26,21 +26,21 @@ public class RejectLeagueInvitation
         public override async Task HandleAsync(RejectLeagueInvitationRequest request, CancellationToken cancellationToken)
         {
             var leagueInvitation = await databaseContext.LeagueInvitations.Include(_ => _.League).FirstOrDefaultAsync(_ => _.Id == request.LeagueInvitationId && _.PlayerEmailAddress == HttpContext.GetAuthenticatedUser()!.EmailAddress, cancellationToken);
-            if(leagueInvitation is null)
+            if (leagueInvitation is null)
                 ThrowError(ErrorKeys.LeagueInvitationDoesNotExist);
 
             leagueInvitation.Status = LeagueInvitationStatus.Rejected;
-            
+
             var notification = await databaseContext.Notifications.FirstOrDefaultAsync(_ => _.Id == request.NotificationId, cancellationToken);
-            if(notification is not null)
+            if (notification is not null)
                 databaseContext.Notifications.Remove(notification);
-            
+
             await databaseContext.SaveChangesAsync(cancellationToken);
 
             await SendAsync(new RejectLeagueInvitationResponse(leagueInvitation.Id), 201, cancellationToken);
         }
     }
-    
+
     public sealed class RejectLeagueInvitationRequestValidator : Validator<RejectLeagueInvitationRequest>
     {
         public RejectLeagueInvitationRequestValidator()

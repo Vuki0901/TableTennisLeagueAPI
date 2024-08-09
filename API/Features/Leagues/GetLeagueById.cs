@@ -63,6 +63,8 @@ public class GetLeagueById
     }
 
     public sealed record UserLeaguePlayer(Guid Id, string? Nickname, LeaguePlayerLevel LeaguePlayerLevel, DateTimeOffset CreatedOn);
+
     public sealed record LeagueInvitationProjection(Guid Id, string PlayerEmailAddress, LeagueInvitationStatus Status, DateTimeOffset CreatedOn);
+
     public sealed record SeasonProjection(Guid Id, DateTimeOffset CreatedOn, int BestOf, int GameThreshold);
 }

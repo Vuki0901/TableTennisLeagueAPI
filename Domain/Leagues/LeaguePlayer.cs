@@ -5,12 +5,9 @@ namespace Domain.Leagues;
 public sealed class LeaguePlayer : Entity
 {
     public LeaguePlayerLevel LeaguePlayerLevel { get; set; }
-    
-    public static LeaguePlayer Create(LeaguePlayerLevel leaguePlayerLevel)
+
+    public static LeaguePlayer Create(LeaguePlayerLevel leaguePlayerLevel) => new()
     {
-        return new LeaguePlayer()
-        {
-            LeaguePlayerLevel = leaguePlayerLevel
-        };
-    }
+        LeaguePlayerLevel = leaguePlayerLevel
+    };
 }

@@ -24,7 +24,7 @@ public class GetSeasonById
         public override async Task HandleAsync(GetSeasonByIdRequest request, CancellationToken cancellationToken)
         {
             var season = await databaseContext.Seasons.Include(_ => _.League).FirstOrDefaultAsync(_ => _.Id == request.Id, cancellationToken);
-            if(season is null)
+            if (season is null)
                 ThrowError(ErrorKeys.SeasonDoesNotExist);
 
             await SendAsync(new GetSeasonByIdResponse(season), cancellation: cancellationToken);

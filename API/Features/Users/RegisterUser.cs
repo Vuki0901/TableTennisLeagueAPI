@@ -28,10 +28,10 @@ public sealed class RegisterUser
         {
             if (await databaseContext.Users.AnyAsync(x => x.EmailAddress == request.EmailAddress, cancellationToken: cancellationToken))
                 ThrowError(ErrorKeys.UserEmailAddressMustBeUnique);
-            
+
             if (await databaseContext.Users.AnyAsync(x => x.Nickname == request.Nickname, cancellationToken: cancellationToken))
                 ThrowError(ErrorKeys.UserNicknameMustBeUnique);
-            
+
             var user = Domain.Users.User.Create(
                 request.Nickname,
                 request.EmailAddress,
@@ -42,7 +42,7 @@ public sealed class RegisterUser
 
             databaseContext.Add(user);
             await databaseContext.SaveChangesAsync(cancellationToken);
-            
+
             var token = JwtBearer.CreateToken(
                 o =>
                 {
