@@ -20,4 +20,9 @@ public class ErrorKeys
     // Invitations
     public const string PlayerIsAlreadyInvitedToThisLeague = nameof(PlayerIsAlreadyInvitedToThisLeague);
     public const string LeagueInvitationDoesNotExist = nameof(LeagueInvitationDoesNotExist);
+    
+    // Seasons
+    public const string SeasonDoesNotExist = nameof(SeasonDoesNotExist);
+    public const string SeasonCanNotBeUpdatedIfItHasFinishedMatches = nameof(SeasonCanNotBeUpdatedIfItHasFinishedMatches);
+    public const string SeasonCanNotBeDeletedIfItHasFinishedMatches = nameof(SeasonCanNotBeDeletedIfItHasFinishedMatches);
 }

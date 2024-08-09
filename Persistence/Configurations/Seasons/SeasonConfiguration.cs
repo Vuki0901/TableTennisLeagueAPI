@@ -11,7 +11,6 @@ public class SeasonConfiguration : IEntityTypeConfiguration<Season>
     {
         builder.HasKey(_ => _.Id);
 
-        builder.Property(_ => _.NumberOfRounds).IsRequired();
         builder.Property(_ => _.BestOf).IsRequired();
         builder.Property(_ => _.GameThreshold).IsRequired();
 

@@ -1,5 +1,4 @@
 ﻿using Domain.Leagues;
-using Domain.Seasons;
 using Domain.Users;
 using FastEndpoints;
 using Infrastructure.Errors;
@@ -47,7 +46,7 @@ public class GetLeagueById
                 Name = league.Name,
                 UserLeaguePlayers = league.LeaguePlayers.Select(_ => new UserLeaguePlayer(_.Id, playerLeaguePlayers.FirstOrDefault(plp => plp.GetRole<Player>().LeaguePlayers.Any(lp => lp.Id == _.Id))?.Nickname, _.LeaguePlayerLevel, _.CreatedOn)).ToList(),
                 LeagueInvitations = league.LeagueInvitations.Select(_ => new LeagueInvitationProjection(_.Id, _.PlayerEmailAddress, _.Status, _.CreatedOn)).ToList(),
-                Seasons = leagueSeasons.ToList()
+                Seasons = leagueSeasons.Select(_ => new SeasonProjection(_.Id, _.CreatedOn, _.BestOf, _.GameThreshold)).ToList()
             };
 
             await SendAsync(new GetLeagueByIdResponse(leagueProjection), 200, cancellationToken);
@@ -60,10 +59,10 @@ public class GetLeagueById
         public string Name { get; set; } = string.Empty;
         public List<UserLeaguePlayer> UserLeaguePlayers { get; set; } = [];
         public List<LeagueInvitationProjection> LeagueInvitations { get; set; } = [];
-        public List<Season> Seasons { get; set; } = [];
+        public List<SeasonProjection> Seasons { get; set; } = [];
     }
 
     public sealed record UserLeaguePlayer(Guid Id, string? Nickname, LeaguePlayerLevel LeaguePlayerLevel, DateTimeOffset CreatedOn);
-
     public sealed record LeagueInvitationProjection(Guid Id, string PlayerEmailAddress, LeagueInvitationStatus Status, DateTimeOffset CreatedOn);
+    public sealed record SeasonProjection(Guid Id, DateTimeOffset CreatedOn, int BestOf, int GameThreshold);
 }
