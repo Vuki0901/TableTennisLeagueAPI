@@ -3,6 +3,8 @@ using Domain.Configurations;
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
+using Infrastructure.Auth;
+using Infrastructure.Interaction;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Extensions;
@@ -56,9 +58,21 @@ app.UseAuthorization();
 app.UseFastEndpoints(config =>
     {
         config.Serializer.Options.Converters.Add(new JsonStringEnumConverter());
+        config.Serializer.Options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         config.Endpoints.RoutePrefix = "api";
+        config.Errors.ResponseBuilder = (failures, _, _) =>
+        {
+            return new Result(
+                failures.GroupBy(f => f.PropertyName)
+                    .ToDictionary(
+                        keySelector: e => e.Key,
+                        elementSelector: e => e.Select(m => m.ErrorMessage).ToArray()
+                    )
+            );
+        };
     }
 );
+app.UseAuthenticatedUserSetter();
 app.UseDeveloperExceptionPage();
 app.UseOpenApi();
 app.UseSwaggerUi(s => s.ConfigureDefaults());

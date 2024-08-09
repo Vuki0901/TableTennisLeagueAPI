@@ -3,6 +3,6 @@
 public enum LeagueInvitationStatus
 {
     Pending = 1,
-    Approved,
+    Accepted,
     Rejected
 }

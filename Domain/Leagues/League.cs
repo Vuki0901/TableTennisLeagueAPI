@@ -16,6 +16,15 @@ public sealed class League : Entity
     public IEnumerable<LeaguePlayer> LeaguePlayers => _leaguePlayers;
     public IEnumerable<LeagueInvitation> LeagueInvitations => _leagueInvitations;
 
+    public static League Create(string name, MatchFormat matchFormat)
+    {
+        return new League()
+        {
+            Name = name,
+            MatchFormat = matchFormat
+        };
+    }
+
     public void AddSeason(Season season)
     {
         _seasons.Add(season);

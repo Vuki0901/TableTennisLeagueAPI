@@ -8,12 +8,11 @@ public sealed class Season : Entity
 {
     private Season() { }
     
-    private Season(int numberOfRounds, int bestOf, int gameThreshold, League league)
+    private Season(int numberOfRounds, int bestOf, int gameThreshold)
     {
         NumberOfRounds = numberOfRounds;
         BestOf = bestOf;
         GameThreshold = gameThreshold;
-        League = league;
     }
     
     private readonly IList<Match> _matches = new List<Match>();
@@ -22,7 +21,6 @@ public sealed class Season : Entity
     public int BestOf { get; set; }
     public int GameThreshold { get; set; }
     
-    public League? League { get; private set; }
     public IEnumerable<Match> Matches => _matches;
 
     public void AddMatch(Match match)
@@ -30,9 +28,9 @@ public sealed class Season : Entity
         _matches.Add(match);
     }
 
-    public static Season Create(int numberOfRounds, int bestOf, int setThreshold, League league)
+    public static Season Create(int numberOfRounds, int bestOf, int setThreshold)
     {
-        var season = new Season(numberOfRounds, bestOf, setThreshold, league);
+        var season = new Season(numberOfRounds, bestOf, setThreshold);
 
         return season;
     }

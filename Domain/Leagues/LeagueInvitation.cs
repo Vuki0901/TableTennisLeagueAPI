@@ -4,8 +4,17 @@ namespace Domain.Leagues;
 
 public sealed class LeagueInvitation : Entity
 {
-    public string InvitationToken { get; set; } = string.Empty;
+    public string PlayerEmailAddress { get; set; } = string.Empty;
     public LeagueInvitationStatus Status { get; set; } = LeagueInvitationStatus.Pending;
     
     public League? League { get; set; }
+
+    public static LeagueInvitation Create(string playerEmailAddress, League league)
+    {
+        return new LeagueInvitation()
+        {
+            PlayerEmailAddress = playerEmailAddress,
+            League = league
+        };
+    }
 }

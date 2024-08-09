@@ -5,8 +5,8 @@ namespace Domain.Notifications;
 
 public abstract class Notification : Entity
 {
-    public string Type { get; set; } = string.Empty;
+    public string Type { get; init; } = null!;
     
-    public Player? Recipient { get; set; }
+    public string? RecipientEmailAddress { get; set; }
     public Player? Sender { get; set; }
 }

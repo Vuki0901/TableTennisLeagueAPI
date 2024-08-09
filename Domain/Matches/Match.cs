@@ -39,8 +39,8 @@ public sealed class Match : Entity
 
     public static Match Create(int scoreHome, int scoreAway, int roundNumber, Season season, LeaguePlayer home, LeaguePlayer away)
     {
-        if (season.Matches.Any(_ => (_.Home!.Player!.Id == home.Player!.Id || _.Home.Player.Id == away.Player!.Id || _.Away!.Player!.Id == away.Player.Id || _.Away.Player.Id == home.Player.Id) && _.RoundNumber == roundNumber))
-            throw new InvalidOperationException("A player can not play more than 1 match in the same round.");
+        // if (season.Matches.Any(_ => (_.Home!.Player!.Id == home.Player!.Id || _.Home.Player.Id == away.Player!.Id || _.Away!.Player!.Id == away.Player.Id || _.Away.Player.Id == home.Player.Id) && _.RoundNumber == roundNumber))
+        //     throw new InvalidOperationException("A player can not play more than 1 match in the same round.");
 
         var match = new Match(scoreHome, scoreAway, roundNumber, season, home, away);
 
