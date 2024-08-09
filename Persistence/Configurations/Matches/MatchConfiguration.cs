@@ -14,6 +14,6 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
         builder.HasOne<LeaguePlayer>(_ => _.Home);
         builder.HasOne<LeaguePlayer>(_ => _.Away);
         builder.HasOne(_ => _.Season);
-        builder.HasMany(_ => _.Sets);
+        builder.HasMany(_ => _.Games);
     }
 }

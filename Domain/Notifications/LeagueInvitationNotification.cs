@@ -7,13 +7,10 @@ public sealed class LeagueInvitationNotification : Notification
 {
     public LeagueInvitation? LeagueInvitation { get; set; }
 
-    public static Notification Create(string playerEmailAddress, LeagueInvitation leagueInvitation, Player sender)
+    public static Notification Create(string playerEmailAddress, LeagueInvitation leagueInvitation, Player sender) => new LeagueInvitationNotification()
     {
-        return new LeagueInvitationNotification()
-        {
-            RecipientEmailAddress = playerEmailAddress,
-            Sender = sender,
-            LeagueInvitation = leagueInvitation
-        };
-    }
+        RecipientEmailAddress = playerEmailAddress,
+        Sender = sender,
+        LeagueInvitation = leagueInvitation
+    };
 }

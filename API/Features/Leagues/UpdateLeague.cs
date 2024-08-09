@@ -23,19 +23,25 @@ public class UpdateLeague
 
         public override async Task HandleAsync(UpdateLeagueRequest request, CancellationToken cancellationToken)
         {
-            var league = await databaseContext.Leagues.Include(_ => _.Seasons).ThenInclude(s => s.Matches).FirstOrDefaultAsync(_ => _.Id == request.Id, cancellationToken: cancellationToken);
-            if(league is null)
+            var league = await databaseContext.Leagues.FirstOrDefaultAsync(_ => _.Id == request.Id, cancellationToken: cancellationToken);
+            if (league is null)
                 ThrowError(ErrorKeys.LeagueDoesNotExist);
-            
-            if(league.Name == request.Name)
+
+            if (league.Name == request.Name)
                 ThrowError(ErrorKeys.NewLeagueNameMustBeDifferentThatTheOldName);
-            
+
             if (await databaseContext.Leagues.AnyAsync(x => x.Name == request.Name, cancellationToken: cancellationToken))
                 ThrowError(ErrorKeys.LeagueNameMustBeUnique);
 
-            if(league.MatchFormat != request.MatchFormat && league.Seasons.Any(_ => _.Matches.Any(m => m.IsFinished)))
+            var leagueMatches = databaseContext.Matches
+                .Include(_ => _.Season)
+                .ThenInclude(s => s!.League)
+                .Where(_ => _.Season != null && _.Season.League != null && _.Season.League.Id == league.Id)
+                .AsEnumerable();
+
+            if (league.MatchFormat != request.MatchFormat && leagueMatches.Any(_ => _.IsFinished))
                 ThrowError(ErrorKeys.LeagueMatchFormatCannotBeChangedAfterAFinishedMatch);
-            
+
             league.Name = request.Name;
             league.MatchFormat = request.MatchFormat;
 

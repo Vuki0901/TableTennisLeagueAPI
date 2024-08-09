@@ -1,5 +1,4 @@
 ﻿using Domain.Leagues;
-using Domain.Notifications;
 using Domain.Users;
 using FastEndpoints;
 using FluentValidation;

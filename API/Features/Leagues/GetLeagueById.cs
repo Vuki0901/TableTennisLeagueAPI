@@ -2,7 +2,6 @@
 using Domain.Seasons;
 using Domain.Users;
 using FastEndpoints;
-using Infrastructure.Auth;
 using Infrastructure.Errors;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -28,7 +27,6 @@ public class GetLeagueById
             var league = await databaseContext.Leagues.AsNoTracking()
                 .Include(_ => _.LeaguePlayers)
                 .Include(_ => _.LeagueInvitations)
-                .Include(_ => _.Seasons)
                 .FirstOrDefaultAsync(_ => _.Id == request.LeagueId, cancellationToken);
             if (league is null)
                 ThrowError(ErrorKeys.LeagueDoesNotExist);
@@ -39,13 +37,17 @@ public class GetLeagueById
                 .Where(_ => _.UserRoles.Any(ur => ur.RoleType == nameof(Player)))
                 .AsEnumerable();
 
+            var leagueSeasons = databaseContext.Seasons
+                .Where(_ => _.League != null && _.League.Id == league.Id)
+                .AsEnumerable();
+
             var leagueProjection = new LeagueProjection()
             {
                 Id = league.Id,
                 Name = league.Name,
                 UserLeaguePlayers = league.LeaguePlayers.Select(_ => new UserLeaguePlayer(_.Id, playerLeaguePlayers.FirstOrDefault(plp => plp.GetRole<Player>().LeaguePlayers.Any(lp => lp.Id == _.Id))?.Nickname, _.LeaguePlayerLevel, _.CreatedOn)).ToList(),
                 LeagueInvitations = league.LeagueInvitations.Select(_ => new LeagueInvitationProjection(_.Id, _.PlayerEmailAddress, _.Status, _.CreatedOn)).ToList(),
-                Seasons = league.Seasons.ToList()
+                Seasons = leagueSeasons.ToList()
             };
 
             await SendAsync(new GetLeagueByIdResponse(leagueProjection), 200, cancellationToken);

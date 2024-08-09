@@ -1,4 +1,5 @@
-﻿using Domain.Seasons;
+﻿using Domain.Leagues;
+using Domain.Seasons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,7 +14,7 @@ public class SeasonConfiguration : IEntityTypeConfiguration<Season>
         builder.Property(_ => _.NumberOfRounds).IsRequired();
         builder.Property(_ => _.BestOf).IsRequired();
         builder.Property(_ => _.GameThreshold).IsRequired();
-        
-        builder.HasMany(_ => _.Matches);
+
+        builder.HasOne<League>(_ => _.League);
     }
 }

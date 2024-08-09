@@ -12,7 +12,6 @@ public class LeagueConfiguration : IEntityTypeConfiguration<League>
 
         builder.Property(_ => _.MatchFormat).IsRequired();
 
-        builder.HasMany(_ => _.Seasons);
         builder.HasMany(_ => _.LeaguePlayers);
         builder.HasMany(_ => _.LeagueInvitations);
     }

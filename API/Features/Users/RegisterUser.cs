@@ -1,5 +1,4 @@
-﻿using System.Runtime.Versioning;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Domain.Configurations;
 using Domain.Users;
 using FastEndpoints;

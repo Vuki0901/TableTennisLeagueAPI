@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Domain.Common;
+﻿using Domain.Common;
 
 namespace Domain.Matches;
 
